@@ -16,6 +16,6 @@ tensorflow_model_server --port=8500 --rest_api_port=${PORT} \\\n\
 && chmod +x /usr/bin/tf_serving_entrypoint.sh
 
 HEALTHCHECK --interval=15s --timeout=3s --retries=3 \
-  CMD curl -f http://localhost:8501/v1/models/customer-churn-model || exit 1
+  CMD curl -f http://localhost:${PORT}/v1/models/customer-churn-model || exit 1
 
 ENTRYPOINT ["/usr/bin/tf_serving_entrypoint.sh"]
