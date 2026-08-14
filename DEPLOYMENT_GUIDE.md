@@ -1,6 +1,6 @@
-# Panduan Deployment ke Railway dengan GitHub
+# Panduan Deployment ke Back4App Containers dengan GitHub
 
-Panduan lengkap step-by-step untuk mendeploy Customer Churn Prediction API ke Railway menggunakan GitHub.
+Panduan lengkap step-by-step untuk mendeploy Customer Churn Prediction API ke Back4App Containers menggunakan GitHub.
 
 ---
 
@@ -8,7 +8,7 @@ Panduan lengkap step-by-step untuk mendeploy Customer Churn Prediction API ke Ra
 
 Sebelum memulai, pastikan Anda sudah punya:
 - Akun GitHub (gratis di https://github.com)
-- Akun Railway (gratis di https://railway.app)
+- Akun Back4App Containers (gratis di https://back4app.com)
 - Git terinstall di komputer Anda
 - Project folder `ml_ops_akhir` sudah siap di lokal
 
@@ -21,7 +21,7 @@ Sebelum memulai, pastikan Anda sudah punya:
 1. Login ke GitHub (https://github.com/login)
 2. Klik **+** di pojok kanan atas → pilih **New repository**
 3. Isi nama repository: `ml-ops-submission` atau `customer-churn-mlops`
-4. Pilih **Public** (agar Railway bisa mengakses)
+4. Pilih **Public** (agar Back4App Containers bisa mengakses)
 5. **Jangan** pilih "Initialize this repository with..."
 6. Klik **Create repository**
 
@@ -71,43 +71,43 @@ Setelah berhasil, cek di GitHub apakah semua file sudah terupload.
 
 ---
 
-## STEP 2: Setup Railway Account dan Deployment
+## STEP 2: Setup Back4App Containers Account dan Deployment
 
-### 2.1 Daftar Akun Railway
+### 2.1 Daftar Akun Back4App Containers
 
-1. Buka https://railway.app
+1. Buka https://back4app.com
 2. Klik **Sign Up**
 3. Pilih cara daftar (GitHub, Email, atau yang lain)
-4. **Jika pilih GitHub:** authorize Railway untuk akses account GitHub Anda
+4. **Jika pilih GitHub:** authorize Back4App Containers untuk akses account GitHub Anda
 
-### 2.2 Buat Project Baru di Railway
+### 2.2 Buat Project Baru di Back4App Containers
 
 1. Setelah login, Anda akan di halaman dashboard
 2. Klik **New Project**
 3. Pilih opsi **Deploy from GitHub repo**
-4. Authorize Railway untuk akses GitHub (jika diminta)
+4. Authorize Back4App Containers untuk akses GitHub (jika diminta)
 5. Cari dan pilih repository `ml-ops-submission` Anda
 6. Pilih branch: **main**
 7. Klik **Deploy**
 
-Railway akan mulai process:
+Back4App Containers akan mulai process:
 - Pull code dari GitHub
 - Build Docker image (sesuai Dockerfile di folder `app/`)
 - Deploy container
 
 Proses ini bisa memakan waktu 2-10 menit.
 
-### 2.3 Konfigurasi Environment Variables di Railway
+### 2.3 Konfigurasi Environment Variables di Back4App Containers
 
 Setelah deployment selesai:
 
-1. Di Railway dashboard, klik project Anda
+1. Di Back4App Containers dashboard, klik project Anda
 2. Pilih tab **Variables** atau **Environment**
 3. Tambahkan variable (jika ada yang diperlukan):
    - `PORT`: `8080` (default sudah ada)
    - `MODEL_PATH`: `/app/model_store/churn_model.joblib`
 
-Kalau tidak ada tab khusus environment, Railway biasanya auto-detect dari `.env` atau config.
+Kalau tidak ada tab khusus environment, Back4App Containers biasanya auto-detect dari `.env` atau config.
 
 ### 2.4 Tunggu Deployment Selesai
 
@@ -123,10 +123,10 @@ Cek status deployment di tab **Deployments** atau **Logs**:
 
 Setelah deployment berhasil:
 
-1. Di Railway dashboard, cari section **Service** atau **Deployment**
+1. Di Back4App Containers dashboard, cari section **Service** atau **Deployment**
 2. Akan ada URL seperti:
    ```
-   https://ml-ops-submission-production.up.railway.app
+   https://ml-ops-submission-production.up.back4app.com
    ```
 
 3. Copy URL ini
@@ -135,7 +135,7 @@ Setelah deployment berhasil:
 
 Buka di browser:
 ```
-https://ml-ops-submission-production.up.railway.app/
+https://ml-ops-submission-production.up.back4app.com/
 ```
 
 Harusnya akan muncul response:
@@ -150,7 +150,7 @@ Gunakan tool seperti Postman atau curl untuk test endpoint `/predict`:
 **Menggunakan PowerShell:**
 
 ```powershell
-$url = "https://ml-ops-submission-production.up.railway.app/predict"
+$url = "https://ml-ops-submission-production.up.back4app.com/predict"
 $body = @{
     customer_age = 35
     gender = "Male"
@@ -178,11 +178,11 @@ Harusnya akan return:
 
 ## STEP 4: Setup Monitoring dengan Prometheus
 
-### 4.1 Deploy Prometheus ke Railway (Opsional)
+### 4.1 Deploy Prometheus ke Back4App Containers (Opsional)
 
-Anda bisa deploy Prometheus ke Railway juga untuk monitoring:
+Anda bisa deploy Prometheus ke Back4App Containers juga untuk monitoring:
 
-1. Di Railway dashboard, buat **New Service**
+1. Di Back4App Containers dashboard, buat **New Service**
 2. Pilih **Docker**
 3. Gunakan Dockerfile dari `monitoring/Dockerfile`
 4. Deploy
@@ -202,10 +202,10 @@ static_configs:
 Menjadi:
 ```yaml
 static_configs:
-  - targets: ['ml-ops-submission-production.up.railway.app']
+  - targets: ['ml-ops-submission-production.up.back4app.com']
 ```
 
-(sesuaikan URL dengan URL deployment Railway Anda)
+(sesuaikan URL dengan URL deployment Back4App Containers Anda)
 
 ### 4.3 Jalankan Prometheus Lokal untuk Testing
 
@@ -234,9 +234,9 @@ Screenshot harus menunjukkan:
 - URL deployment di address bar
 - Response dari endpoint `/` atau `/predict` yang menunjukkan app running
 
-### 5.2 Screenshot Deployment di Railway Dashboard
+### 5.2 Screenshot Deployment di Back4App Containers Dashboard
 
-1. Buka Railway dashboard
+1. Buka Back4App Containers dashboard
 2. Ambil screenshot halaman project yang menunjukkan:
    - Status deployment: **"Success"** atau **"Running"**
    - URL public app
@@ -262,8 +262,8 @@ Menjadi:
 
 ```markdown
 ## Web App / API URL
-Aplikasi di-deploy ke Railway dengan URL:
-- https://ml-ops-submission-production.up.railway.app
+Aplikasi di-deploy ke Back4App Containers dengan URL:
+- https://ml-ops-submission-production.up.back4app.com
 
 Anda bisa test API dengan endpoint:
 - GET `/` → health check
@@ -276,11 +276,11 @@ Anda bisa test API dengan endpoint:
 ```powershell
 cd "C:\Users\muham\Downloads\PEMBELAJARAN-EXTERNAL\DICODING\Project adha\ml_ops_akhir"
 git add README.md
-git commit -m "Update deployment URL to Railway"
+git commit -m "Update deployment URL to Back4App Containers"
 git push origin main
 ```
 
-Railway akan otomatis re-deploy jika ada perubahan di main branch.
+Back4App Containers akan otomatis re-deploy jika ada perubahan di main branch.
 
 ---
 
@@ -438,7 +438,7 @@ Hasil: `ml_ops_submission_final.zip`
 
 ## Troubleshooting
 
-### Problem: Deployment di Railway Gagal
+### Problem: Deployment di Back4App Containers Gagal
 
 **Error di Logs:**
 - `ModuleNotFoundError`: cek `requirements.txt` apakah semua dependency terinstall
@@ -448,17 +448,17 @@ Hasil: `ml_ops_submission_final.zip`
 **Solusi:**
 1. Fix code lokal
 2. Push ke GitHub: `git add . && git commit -m "Fix" && git push`
-3. Railway akan otomatis re-deploy
+3. Back4App Containers akan otomatis re-deploy
 
 ### Problem: API URL Tidak Bisa Diakses
 
-- Cek apakah Railway deployment status **Running** (hijau)
+- Cek apakah Back4App Containers deployment status **Running** (hijau)
 - Tunggu 1-2 menit setelah deploy selesai, baru test
 - Cek firewall lokal tidak memblok akses keluar
 
 ### Problem: Prometheus Tidak Bisa Scrape Target
 
-- Cek URL di `prometheus.yml` sudah benar (sesuai URL Railway)
+- Cek URL di `prometheus.yml` sudah benar (sesuai URL Back4App Containers)
 - Cek endpoint `/metrics` ada di `app/main.py` (sudah ada di template)
 - Kalau Prometheus lokal, URL target harus `http://host.docker.internal:8080` (bukan localhost)
 
@@ -467,7 +467,7 @@ Hasil: `ml_ops_submission_final.zip`
 ## Checklist Sebelum Submit
 
 - [ ] Repository GitHub sudah di-create dan push semua file
-- [ ] Deployment ke Railway berhasil dan running
+- [ ] Deployment ke Back4App Containers berhasil dan running
 - [ ] URL deployment sudah ganti di README.md
 - [ ] Test `/predict` endpoint via browser atau postman → berhasil
 - [ ] Prometheus bisa scrape metrics dari API
@@ -484,7 +484,7 @@ Hasil: `ml_ops_submission_final.zip`
 
 Jika ada masalah:
 
-- Railway Docs: https://docs.railway.app
+- Back4App Containers Docs: https://docs.back4app.com
 - GitHub Docs: https://docs.github.com
 - FastAPI Docs: https://fastapi.tiangolo.com
 - Prometheus Docs: https://prometheus.io/docs
