@@ -57,11 +57,14 @@ def predict(item: CustomerInput):
     global model
     global predict_fn
     if not predict_fn:
-        latest_path = get_latest_model_path()
-        if not latest_path:
-            raise HTTPException(status_code=500, detail="Model not found in model_store.")
-        model = tf.saved_model.load(latest_path)
-        predict_fn = model.signatures['serving_default']
+        try:
+            latest_path = get_latest_model_path()
+            if not latest_path:
+                raise HTTPException(status_code=500, detail="Model not found in model_store.")
+            model = tf.saved_model.load(latest_path)
+            predict_fn = model.signatures['serving_default']
+        except Exception as e:
+            return {"error": str(e), "type": str(type(e)), "path": latest_path}
         
     REQUEST_COUNT.inc()
     with REQUEST_LATENCY.time():
