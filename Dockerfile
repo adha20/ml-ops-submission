@@ -2,7 +2,7 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-RUN pip install "tensorflow==2.10.0" "fastapi" "uvicorn" "pydantic" "prometheus-client" numpy
+RUN pip install "tensorflow==2.10.0" "fastapi" "uvicorn" "pydantic" "prometheus-client" "numpy<2.0.0"
 
 # Create model_store directory and copy app
 COPY app ./app
