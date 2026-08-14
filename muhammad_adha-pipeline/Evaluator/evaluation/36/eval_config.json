@@ -1,0 +1,38 @@
+{
+  "evalConfig": {
+    "modelSpecs": [
+      {
+        "labelKey": "churn"
+      }
+    ],
+    "slicingSpecs": [
+      {}
+    ],
+    "metricsSpecs": [
+      {
+        "metrics": [
+          {
+            "className": "ExampleCount"
+          },
+          {
+            "className": "BinaryAccuracy",
+            "threshold": {
+              "valueThreshold": {
+                "lowerBound": 0.5
+              }
+            }
+          }
+        ],
+        "modelNames": [
+          ""
+        ]
+      }
+    ]
+  },
+  "version": "0.42.0",
+  "dataLocation": "<user provided PCollection>",
+  "fileFormat": "<unknown>",
+  "modelLocations": {
+    "": "C:\\Users\\muham\\Downloads\\PEMBELAJARAN-EXTERNAL\\DICODING\\Project adha\\ml_ops_akhir\\muhammad_adha-pipeline\\Trainer\\model\\33\\Format-Serving"
+  }
+}

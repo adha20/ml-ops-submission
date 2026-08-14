@@ -1,0 +1,14 @@
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+fastapi>=0.110.0
+uvicorn>=0.29.0
+prometheus-client>=0.20.0
+joblib>=1.3.0
+
+# MLOps / pipeline dependencies
+# TFX and Beam are intended to be installed in a dedicated virtual environment matching the class setup.
+tensorflow>=2.13.0
+apache-beam>=2.53.0
+tfx>=1.13.0
+keras-tuner>=1.4.0
