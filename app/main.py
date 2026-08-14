@@ -32,18 +32,8 @@ def get_latest_model_path():
     latest_version = sorted(versions, key=int)[-1]
     return os.path.join(MODEL_STORE_DIR, latest_version)
 
-@app.on_event('startup')
-def startup_event():
-    global model
-    global predict_fn
-    latest_path = get_latest_model_path()
-    if latest_path:
-        model = tf.saved_model.load(latest_path)
-        predict_fn = model.signatures['serving_default']
-    else:
-        model = None
-        predict_fn = None
-        print("Warning: No TFX model found in model_store.")
+model = None
+predict_fn = None
 
 def _float_feature(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=[value]))
@@ -64,8 +54,14 @@ def metrics():
 
 @app.post('/predict')
 def predict(item: CustomerInput):
+    global model
+    global predict_fn
     if not predict_fn:
-        raise HTTPException(status_code=500, detail="Model is not loaded.")
+        latest_path = get_latest_model_path()
+        if not latest_path:
+            raise HTTPException(status_code=500, detail="Model not found in model_store.")
+        model = tf.saved_model.load(latest_path)
+        predict_fn = model.signatures['serving_default']
         
     REQUEST_COUNT.inc()
     with REQUEST_LATENCY.time():
