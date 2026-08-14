@@ -20,9 +20,11 @@ Setelah melakukan pelatihan dan *tuning*, model dievaluasi dan menunjukkan perfo
 ## 6. Model Deployment
 Model disajikan (*served*) menggunakan aplikasi **FastAPI** yang berjalan dalam *container Docker*. Aplikasi ini menyediakan endpoint REST API untuk menerima data pelanggan dan mengembalikan prediksi *churn*. Aplikasi di-*deploy* menggunakan layanan cloud seperti **Railway** / **Render** / **Heroku**.
 
-## 7. Tautan Web App
-*(Isi dengan tautan/URL aplikasi Anda setelah deployment)*
-- Web App URL: `https://[nama-app-anda].up.railway.app`
+## 7. Web App / API URL
+Aplikasi di-deploy ke Back4App Containers dengan URL:
+- https://customerchurnapi-3h7jdnsm.b4a.run
+
+Anda bisa test API dengan endpoint:
 
 ## 8. Monitoring dengan Prometheus dan Grafana
 Sistem monitoring dijalankan menggunakan **Prometheus** untuk mengumpulkan metrik dari endpoint `/metrics` di FastAPI, serta divisualisasikan menggunakan **Grafana**. Metrik yang dikumpulkan mencakup jumlah *request*, *latency*, dan penggunaan *resources* (*CPU/Memory*).
