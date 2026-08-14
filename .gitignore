@@ -8,3 +8,5 @@ venv/
 *.joblib
 .ipynb_checkpoints/
 .DS_Store
+
+muhammad_adha-pipeline/
