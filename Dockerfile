@@ -1,15 +1,15 @@
-FROM python:3.9-slim
+FROM tensorflow/serving:latest
 
-WORKDIR /app
+COPY ./app/model_store /models/customer-churn-model
+COPY ./monitoring /model_config
+ENV MODEL_NAME=customer-churn-model
 
-RUN pip install "tensorflow==2.10.0" "fastapi" "uvicorn" "pydantic" "prometheus-client" "numpy<2.0.0"
-
-# Create model_store directory and copy app
-COPY app ./app
-
-EXPOSE 8080
-
-ENV PORT=8080
-ENV MODEL_STORE_DIR=/app/app/model_store
-
-CMD ["python", "app/main.py"]
+ENV MONITORING_CONFIG="/model_config/prometheus.config"
+ENV PORT=8501
+RUN echo '#!/bin/bash \n\n\
+env \n\
+tensorflow_model_server --port=8500 --rest_api_port=${PORT} \
+--model_name=${MODEL_NAME} --model_base_path=${MODEL_BASE_PATH}/${MODEL_NAME} \
+--monitoring_config_file=${MONITORING_CONFIG} \
+"$@"' > /usr/bin/tf_serving_entrypoint.sh \
+&& chmod +x /usr/bin/tf_serving_entrypoint.sh
