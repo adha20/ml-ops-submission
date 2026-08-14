@@ -68,29 +68,32 @@ def predict(item: CustomerInput):
         
     REQUEST_COUNT.inc()
     with REQUEST_LATENCY.time():
-        example = tf.train.Example(features=tf.train.Features(feature={
-            'customer_age': _int64_feature(item.customer_age),
-            'gender': _bytes_feature(item.gender),
-            'contract_type': _bytes_feature(item.contract_type),
-            'monthly_charges': _float_feature(item.monthly_charges),
-            'tenure': _int64_feature(item.tenure),
-            'support_calls': _int64_feature(item.support_calls),
-            'total_usage': _int64_feature(item.total_usage),
-            'satisfaction_score': _int64_feature(item.satisfaction_score),
-        }))
-        
-        serialized_example = example.SerializeToString()
-        tensor = tf.constant([serialized_example])
-        
-        prediction_result = predict_fn(examples=tensor)
-        probability = float(prediction_result['output_0'].numpy()[0][0])
-        prediction_class = int(probability >= 0.5)
-        
-        return {
-            'prediction': prediction_class,
-            'probability': probability,
-            'label': 'churn' if prediction_class == 1 else 'no_churn'
-        }
+        try:
+            example = tf.train.Example(features=tf.train.Features(feature={
+                'customer_age': _int64_feature(item.customer_age),
+                'gender': _bytes_feature(item.gender),
+                'contract_type': _bytes_feature(item.contract_type),
+                'monthly_charges': _float_feature(item.monthly_charges),
+                'tenure': _int64_feature(item.tenure),
+                'support_calls': _int64_feature(item.support_calls),
+                'total_usage': _int64_feature(item.total_usage),
+                'satisfaction_score': _int64_feature(item.satisfaction_score),
+            }))
+            
+            serialized_example = example.SerializeToString()
+            tensor = tf.constant([serialized_example])
+            
+            prediction_result = predict_fn(examples=tensor)
+            probability = float(prediction_result['output_0'].numpy()[0][0])
+            prediction_class = int(probability >= 0.5)
+            
+            return {
+                'prediction': prediction_class,
+                'probability': probability,
+                'label': 'churn' if prediction_class == 1 else 'no_churn'
+            }
+        except Exception as e:
+            return {"error": str(e), "type": str(type(e)), "stage": "inference"}
 
 if __name__ == '__main__':
     import uvicorn
