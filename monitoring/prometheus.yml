@@ -3,6 +3,11 @@ global:
   evaluation_interval: 15s
   external_labels:
     monitor: "tf-serving-monitor"
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: "tf-serving-monitor"
 
 scrape_configs:
   - job_name: "prometheus"
@@ -10,4 +15,4 @@ scrape_configs:
     scheme: https
     metrics_path: /monitoring/prometheus/metrics
     static_configs:
-      - targets: ['<URL_TF_SERVING_RAILWAY>']
+      - targets: ['ml-ops-submission-production.up.railway.app']
