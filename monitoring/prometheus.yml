@@ -10,4 +10,4 @@ scrape_configs:
     scheme: https
     metrics_path: /monitoring/prometheus/metrics
     static_configs:
-      - targets: ['customerchurnapi-z4ib9f9m.b4a.run']
+      - targets: ['<URL_TF_SERVING_RAILWAY>']
